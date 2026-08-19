@@ -25,7 +25,7 @@ permission-denied and network states honestly.
 
 ### Endpoints expected by the HTTP adapter
 
-`GET /v1/me`, `POST /v1/auth/signin`, `POST /v1/auth/signout`,
+`GET /v1/me`, `POST /v1/auth/session`, `DELETE /v1/auth/session`,
 `GET|POST /v1/projects`, `GET /v1/projects/:id`,
 `GET|POST /v1/projects/:id/documents`, `POST /v1/projects/:id/analysis`,
 `GET /v1/projects/:id/analysis`, `GET /v1/projects/:id/findings`,
