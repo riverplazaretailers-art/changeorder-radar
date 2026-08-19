@@ -30,7 +30,7 @@ permission-denied and network states honestly.
 `GET|POST /v1/projects/:id/documents`, `POST /v1/projects/:id/analysis`,
 `GET /v1/projects/:id/analysis`, `GET /v1/projects/:id/findings`,
 `GET|PATCH /v1/findings/:id`, `GET /v1/projects/:id/audit`,
-`GET /v1/projects/:id/export`, `GET /v1/integrations`,
+`GET /v1/projects/:id/action-register`, `GET /v1/integrations`,
 `GET|PUT /v1/settings`, `GET /v1/ops/runs`.
 
 ## Workflow rules in the UI
