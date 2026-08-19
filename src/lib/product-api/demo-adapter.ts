@@ -367,6 +367,17 @@ export function createDemoProductApi(options: DemoApiOptions = {}): ProductApi {
 
   return {
     mode: "demo",
+    capabilities: {
+      liveData: false,
+      signIn: true,
+      createProject: true,
+      uploadDocuments: true,
+      startAnalysis: true,
+      updateFindings: true,
+      exportActionRegister: true,
+      writeSettings: true,
+      operations: true,
+    },
 
     async getCurrentUser() {
       await wait();

@@ -70,6 +70,17 @@ export function createHttpProductApi(baseUrl: string, fetchImpl: typeof fetch = 
 
   return {
     mode: "http",
+    capabilities: {
+      liveData: true,
+      signIn: true,
+      createProject: true,
+      uploadDocuments: true,
+      startAnalysis: true,
+      updateFindings: true,
+      exportActionRegister: true,
+      writeSettings: true,
+      operations: true,
+    },
 
     async getCurrentUser() {
       try {
