@@ -174,8 +174,27 @@ export class ProductApiError extends Error {
   }
 }
 
+/**
+ * What the active adapter can actually do. The UI hides or disables anything
+ * that is false — we never render an action the boundary cannot honour.
+ */
+export interface ProductApiCapabilities {
+  /** Data shown is real customer data (false for demo and secure-link). */
+  liveData: boolean;
+  signIn: boolean;
+  createProject: boolean;
+  uploadDocuments: boolean;
+  /** In the preserved backend, analysis is triggered BY upload, not separately. */
+  startAnalysis: boolean;
+  updateFindings: boolean;
+  exportActionRegister: boolean;
+  writeSettings: boolean;
+  operations: boolean;
+}
+
 export interface ProductApi {
-  readonly mode: "http" | "demo";
+  readonly mode: "http" | "demo" | "secure-link";
+  readonly capabilities: ProductApiCapabilities;
 
   getCurrentUser(): Promise<AccountUser | null>;
   signIn(email: string): Promise<AccountUser>;

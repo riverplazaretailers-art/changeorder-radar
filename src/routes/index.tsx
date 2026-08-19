@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, FileSearch, ClipboardList, ScrollText, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SiteLayout } from "@/components/site-chrome";
+import { WorkspaceCta } from "@/components/workspace-cta";
 import { StatusPill } from "@/components/status-pill";
 
 export const Route = createFileRoute("/")({
@@ -90,6 +91,7 @@ function LandingPage() {
                   <ArrowRight className="size-4" aria-hidden />
                 </Link>
               </Button>
+              <WorkspaceCta path="/sign-in" label="Open the secure workspace" variant="outline" />
               <Button asChild size="lg" variant="outline">
                 <Link to="/workflow">See the workflow</Link>
               </Button>
@@ -259,12 +261,15 @@ function LandingPage() {
               Private beta accounts are onboarded one project at a time.
             </p>
           </div>
-          <Button asChild size="lg">
-            <Link to="/request-access">
-              Request private beta
-              <ArrowRight className="size-4" aria-hidden />
-            </Link>
-          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild size="lg">
+              <Link to="/request-access">
+                Request private beta
+                <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </Button>
+            <WorkspaceCta path="/sign-in" label="Open the secure workspace" variant="outline" />
+          </div>
         </div>
       </section>
     </SiteLayout>
