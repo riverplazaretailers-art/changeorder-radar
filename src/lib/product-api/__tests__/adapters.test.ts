@@ -5,13 +5,25 @@ import { resolveProductApi } from "../index";
 import { ProductApiError } from "../types";
 
 describe("adapter selection", () => {
-  it("uses the demo adapter when no base URL is configured", () => {
-    expect(resolveProductApi("").mode).toBe("demo");
-    expect(resolveProductApi("   ").mode).toBe("demo");
+  it("uses the demo adapter when nothing is configured", () => {
+    expect(resolveProductApi({}).mode).toBe("demo");
+    expect(resolveProductApi({ VITE_API_BASE_URL: "   " }).mode).toBe("demo");
   });
 
-  it("uses the HTTP adapter when VITE_API_BASE_URL is configured", () => {
-    expect(resolveProductApi("https://api.example.com").mode).toBe("http");
+  it("uses the HTTP adapter only with base URL AND contract version v1", () => {
+    expect(
+      resolveProductApi({
+        VITE_API_BASE_URL: "https://api.example.com",
+        VITE_API_CONTRACT_VERSION: "v1",
+      }).mode,
+    ).toBe("http");
+    expect(resolveProductApi({ VITE_API_BASE_URL: "https://api.example.com" }).mode).toBe("demo");
+  });
+
+  it("uses the secure-link adapter when the workspace URL is configured", () => {
+    expect(
+      resolveProductApi({ VITE_SECURE_WORKSPACE_URL: "https://workspace.example.com" }).mode,
+    ).toBe("secure-link");
   });
 });
 
