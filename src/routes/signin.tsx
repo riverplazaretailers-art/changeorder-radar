@@ -7,7 +7,8 @@ import { SiteLayout } from "@/components/site-chrome";
 import { ErrorState } from "@/components/states";
 import { useSession } from "@/lib/session";
 import { analytics } from "@/lib/analytics";
-import { isDemoMode } from "@/lib/product-api";
+import { isDemoMode, isSecureLinkMode } from "@/lib/product-api";
+import { WorkspaceCta } from "@/components/workspace-cta";
 
 export const Route = createFileRoute("/signin")({
   head: () => ({
