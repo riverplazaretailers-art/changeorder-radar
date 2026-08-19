@@ -53,7 +53,7 @@ function HistoryPage() {
             </thead>
             <tbody>
               {rows.map(({ project, event }) => (
-                <tr key={event.id}>
+                <tr key={`${project.id}:${event.id}`}>
                   <td className="numeric whitespace-nowrap text-xs text-muted-foreground">
                     {formatDateTime(event.at)}
                   </td>
