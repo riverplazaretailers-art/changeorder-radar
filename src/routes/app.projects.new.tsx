@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AppShell } from "@/components/app-shell";
 import { ErrorState, PermissionDeniedState } from "@/components/states";
-import { getProductApi } from "@/lib/product-api";
+import { capabilities, getProductApi } from "@/lib/product-api";
 import { analytics } from "@/lib/analytics";
 import { useSession } from "@/lib/session";
 import { canActOnFindings } from "@/lib/workflow/finding-transitions";
@@ -30,7 +30,7 @@ function NewProjectPage() {
     },
   });
 
-  const allowed = canActOnFindings(user?.role);
+  const allowed = canActOnFindings(user?.role) && capabilities().createProject;
 
   return (
     <AppShell

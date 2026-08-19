@@ -32,6 +32,7 @@ import {
 import { analytics } from "@/lib/analytics";
 import { useSession } from "@/lib/session";
 import { canActOnFindings } from "@/lib/workflow/finding-transitions";
+import { capabilities } from "@/lib/product-api";
 
 export const Route = createFileRoute("/app/projects/$projectId")({
   component: ProjectDetailPage,
@@ -43,6 +44,7 @@ function ProjectDetailPage() {
   const { projectId } = Route.useParams();
   const queryClient = useQueryClient();
   const { user } = useSession();
+  const caps = capabilities();
   const canAct = canActOnFindings(user?.role);
 
   const project = useQuery(projectQuery(projectId));
@@ -168,7 +170,7 @@ function ProjectDetailPage() {
             size="sm"
             variant="outline"
             onClick={() => exportRegister.mutate()}
-            disabled={exportRegister.isPending || findingList.length === 0}
+            disabled={exportRegister.isPending || findingList.length === 0 || !caps.exportActionRegister}
           >
             <Download className="size-4" aria-hidden />
             Export register
@@ -176,7 +178,7 @@ function ProjectDetailPage() {
           <Button
             size="sm"
             onClick={() => analyze.mutate()}
-            disabled={analyze.isPending || docs.length === 0 || !canAct}
+            disabled={analyze.isPending || docs.length === 0 || !canAct || !caps.startAnalysis}
           >
             <Play className="size-4" aria-hidden />
             {analyze.isPending ? "Analyzing…" : "Run analysis"}
@@ -265,7 +267,7 @@ function ProjectDetailPage() {
               <Button
                 size="sm"
                 variant="outline"
-                disabled={upload.isPending || !canAct}
+                disabled={upload.isPending || !canAct || !caps.uploadDocuments}
                 onClick={() => fileRef.current?.click()}
               >
                 <Upload className="size-4" aria-hidden />
