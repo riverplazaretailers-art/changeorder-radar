@@ -26,6 +26,42 @@ export const Route = createFileRoute("/signin")({
 });
 
 function SignInPage() {
+  if (isSecureLinkMode()) return <SecureWorkspaceSignIn />;
+  return <CredentialSignIn />;
+}
+
+function SecureWorkspaceSignIn() {
+  return (
+    <SiteLayout>
+      <section className="mx-auto flex max-w-md flex-col px-4 py-16">
+        <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          ChangeOrder Radar sign-in is handled by the secure workspace that holds your project
+          records, documents and findings. This site does not hold customer data.
+        </p>
+        <div className="panel mt-6 space-y-4 p-5">
+          <WorkspaceCta path="/sign-in" label="Sign in to the secure workspace" />
+          <p className="text-xs text-muted-foreground">
+            Opens the preserved ChangeOrder Radar workspace in a new tab. Upload, deterministic
+            analysis, evidence and finding decisions all happen there.
+          </p>
+        </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          No account yet?{" "}
+          <Link
+            to="/request-access"
+            className="font-medium text-primary underline-offset-4 hover:underline"
+          >
+            Request private beta access
+          </Link>
+          .
+        </p>
+      </section>
+    </SiteLayout>
+  );
+}
+
+function CredentialSignIn() {
   const { signIn, status } = useSession();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
