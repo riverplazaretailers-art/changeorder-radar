@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Download, Play, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -48,7 +48,14 @@ function ProjectDetailPage() {
   const project = useQuery(projectQuery(projectId));
   const documents = useQuery(documentsQuery(projectId));
   const findings = useQuery(findingsQuery(projectId));
-  const run = useQuery(analysisRunQuery(projectId));
+  const run = useQuery({
+    ...analysisRunQuery(projectId),
+    // The backend owns the run; the UI simply polls until it settles.
+    refetchInterval: (query) => {
+      const state = query.state.data?.state;
+      return state === "queued" || state === "running" ? 1500 : false;
+    },
+  });
 
   const [kind, setKind] = useState<DocumentKind>("contract");
   const [exported, setExported] = useState<string | null>(null);
@@ -64,6 +71,20 @@ function ProjectDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["projects"] }),
     ]);
   };
+
+  const runState = run.data?.state;
+  useEffect(() => {
+    if (runState !== "succeeded" && runState !== "failed") return;
+    void Promise.all([
+      queryClient.invalidateQueries({ queryKey: ["findings", projectId] }),
+      queryClient.invalidateQueries({ queryKey: ["project", projectId] }),
+      queryClient.invalidateQueries({ queryKey: ["documents", projectId] }),
+      queryClient.invalidateQueries({ queryKey: ["audit", projectId] }),
+      queryClient.invalidateQueries({ queryKey: ["projects"] }),
+    ]);
+  }, [runState, projectId, queryClient]);
+
+
 
   const upload = useMutation({
     mutationFn: async (file: File) =>
